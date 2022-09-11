@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9438525f41344b47908075538fc7fd8, type: 3}
+  m_Name: Question 12
+  m_EditorClassIdentifier: 
+  question: O que a Virtu GNL oferece ao mercado?
+  answers:
+  - "Solu\xE7\xF5es de transporte multimodal"
+  - "Tecnologia de armazenamento e regaseifica\xE7\xE3o do g\xE1s"
+  - "Tecnologia para liquefa\xE7\xE3o da mol\xE9cula"
+  - "Todas as alternativas, em solu\xE7\xF5es integradas"
+  answerRightIndex: 3
+  questionRightDescription: "A Virtu GNL oferece ao mercado solu\xE7\xF5es integradas
+    para GNL de pequena escala, que v\xE3o\r\ndesde a tecnologia para liquefa\xE7\xE3o
+    da mol\xE9cula, passando pelo transporte multimodal\r\n(rodovi\xE1rio e fluvial,
+    por exemplo), at\xE9 as tecnologias de armazenamento e regaseifica\xE7\xE3o\r\ndo
+    g\xE1s."

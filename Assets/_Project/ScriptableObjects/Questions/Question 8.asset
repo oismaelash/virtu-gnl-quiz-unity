@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9438525f41344b47908075538fc7fd8, type: 3}
+  m_Name: Question 8
+  m_EditorClassIdentifier: 
+  question: "O GNL \xE9 inflam\xE1vel?"
+  answers:
+  - "N\xE3o \xE9 explosivo, nem \xE9 inflam\xE1vel"
+  - "N\xE3o \xE9 explosivo, mas \xE9 inflam\xE1vel"
+  - "\xC9 explosivo, mas n\xE3o inflam\xE1vel"
+  - Nenhuma das alternativas
+  answerRightIndex: 2
+  questionRightDescription: "O GNL \xE9 explosivo, mas n\xE3o \xE9 inflam\xE1vel."

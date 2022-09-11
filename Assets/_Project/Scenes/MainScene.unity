@@ -1761,7 +1761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitMaxQuestions: 5
-  timeMaxQuestionInSeconds: 20
+  timeMaxQuestionInSeconds: 5
   timeDecreaseTimerSliderInSeconds: 1
   countDecreaseTimerSlider: 1
   questionScriptableObjects:

@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using IsmaelNascimento.Prefab;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace IsmaelNascimento.Manager
 {
@@ -11,32 +12,42 @@ namespace IsmaelNascimento.Manager
     {
         #region VARIABLES
 
-        private List<int> questionsSelected = new List<int>();
+        private readonly List<int> questionsSelected = new();
         private const string POINTS_PLAYERPREFS_NAME = "POINTS_PLAYERPREFS_NAME";
         private int counterQuestion;
 
+        [Space()]
         [Header("Parameters")]
         [SerializeField] private int limitMaxQuestions = 5;
         [SerializeField] private int timeMaxQuestionInSeconds = 20;
         [SerializeField] private float timeDecreaseTimerSliderInSeconds = 1f;
         [SerializeField] private float countDecreaseTimerSlider= 1f;
 
+        [Space()]
         [Header("Questions")]
         [SerializeField] private QuestionScriptableObject[] questionScriptableObjects;
+        
+        [Space()]
         [Header("UserInterfaceGeneral")]
         [SerializeField] private List<GameObject> screens;
         [SerializeField] private AnswerPrefab answerPrefab;
         [SerializeField] private Button startGameButton;
         [SerializeField] private Button nextQuestionButton;
+        
+        [Space()]
         [Header("QuestionScreen")]
         [SerializeField] private TMP_Text questionIdText;
         [SerializeField] private TMP_Text questionDescription;
         [SerializeField] private Transform rootAnswers;
         [SerializeField] private Slider timerSlider;
+        
+        [Space()]
         [Header("AfterScreen")]
         [SerializeField] private TMP_Text afterQuestionIdText;
         [SerializeField] private TMP_Text afterQuestionDescription;
         [SerializeField] private TMP_Text afterQuestionDescriptionRigth;
+        
+        [Space()]
         [Header("ResultScreen")]
         [SerializeField] private TMP_Text countAnswersRigth;
         [SerializeField] private Button homeButton;
@@ -69,11 +80,11 @@ namespace IsmaelNascimento.Manager
 
             for (int index = 0; index <= limitMaxQuestions; index++)
             {
-                int questionRandom = Random.Range(0, questionScriptableObjects.Length);
+                int newQuestion = Random.Range(0, questionScriptableObjects.Length);
 
-                if (!questionsSelected.Contains(questionRandom))
+                if (!questionsSelected.Contains(newQuestion))
                 {
-                    questionsSelected.Add(questionRandom);
+                    questionsSelected.Add(newQuestion);
                 }
             }
 
@@ -83,6 +94,83 @@ namespace IsmaelNascimento.Manager
             }
         }
 
+        private void DecreaseTimerSlider()
+        {
+            timerSlider.value -= countDecreaseTimerSlider;
+        }
+
+        private void SetupAfterScreen()
+        {
+            afterQuestionIdText.text = $"{GetCounterQuestionCurrentForShow()}";
+            afterQuestionDescription.text = questionScriptableObjects[counterQuestion].question;
+            afterQuestionDescriptionRigth.text = questionScriptableObjects[counterQuestion].questionRightDescription;
+            EnableScreen("AfterQuestion_Panel");
+        }
+
+        private bool VerifyIsLastQuestion()
+        {
+            if(GetCounterQuestionCurrentForShow() == limitMaxQuestions)
+            {
+                countAnswersRigth.text = PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME).ToString();
+                CancelInvoke(nameof(DecreaseTimerSlider));
+                EnableScreen("Result_Panel");
+                StartCoroutine(nameof(EnableHomeScreenAutomatic_Coroutine));
+                return true;
+            }
+
+            return false;
+        }
+
+        private void EnableScreen(string screenName)
+        {
+            screens.ForEach(screen => screen.SetActive(false));
+
+            GameObject screenForEnable = screens.Find(screen => screen.name == screenName);
+            screenForEnable.SetActive(true);
+        }
+
+        private void SetQuestion()
+        {
+            int questionCurrentIndex = questionsSelected[counterQuestion];
+            QuestionScriptableObject questionCurrent = questionScriptableObjects[questionCurrentIndex];
+
+            // Clear answers previous
+            for (int index = 0; index < rootAnswers.transform.childCount; index++)
+            {
+                Transform children = rootAnswers.transform.GetChild(index);
+                Destroy(children.gameObject);
+            }
+
+            // Set information on UI
+            questionIdText.text = $"{GetCounterQuestionCurrentForShow()}";
+            questionDescription.text = questionCurrent.question;
+
+
+            // Add answers for question current
+            for (int index = 0; index < questionCurrent.answers.Length; index++)
+            {
+                AnswerPrefab answerPrefabCreated = Instantiate(answerPrefab, rootAnswers);
+                answerPrefabCreated.SetText(questionCurrent.answers[index]);
+
+                if(index == questionCurrent.answerRightIndex)
+                {
+                    answerPrefabCreated.SetRigth(true);
+                }
+            }
+
+            timerSlider.maxValue = timeMaxQuestionInSeconds;
+            timerSlider.value = timeMaxQuestionInSeconds;
+        }
+
+        private int GetCounterQuestionCurrentForShow()
+        {
+            return counterQuestion + 1;
+        }
+
+        #endregion
+
+        #region HANDLER_METHODS
+
         private void OnAnswerClick_Handler(bool isRigth)
         {
             CancelInvoke(nameof(DecreaseTimerSlider));
@@ -90,7 +178,7 @@ namespace IsmaelNascimento.Manager
             if (isRigth)
             {
                 int pointsCurrent = PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME);
-                int newPoints = pointsCurrent+1;
+                int newPoints = pointsCurrent + 1;
                 PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, newPoints);
                 NextQuestionButton_Handler(true);
             }
@@ -104,24 +192,11 @@ namespace IsmaelNascimento.Manager
 
         private void TimerSliderOnValueChanged_Handler(float value)
         {
-            if(value < 1f)
+            if (value < 1f)
             {
                 CancelInvoke(nameof(DecreaseTimerSlider));
                 NextQuestionButton_Handler(true);
             }
-        }
-
-        private void DecreaseTimerSlider()
-        {
-            timerSlider.value -= countDecreaseTimerSlider;
-        }
-
-        private void SetupAfterScreen()
-        {
-            afterQuestionIdText.text = $"{counterQuestion+1}";
-            afterQuestionDescription.text = questionScriptableObjects[counterQuestion].question;
-            afterQuestionDescriptionRigth.text = questionScriptableObjects[counterQuestion].questionRightDescription;
-            EnablePanel("AfterQuestion_Panel");
         }
 
         private void NextQuestionButton_Handler(bool isAuto)
@@ -141,7 +216,7 @@ namespace IsmaelNascimento.Manager
             }
             else
             {
-                EnablePanel("Question_Panel");
+                EnableScreen("Question_Panel");
                 InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
             }
         }
@@ -152,63 +227,24 @@ namespace IsmaelNascimento.Manager
             GetQuestions();
             timerSlider.value = timeMaxQuestionInSeconds;
             PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, 0);
-            EnablePanel("Question_Panel");
+            EnableScreen("Question_Panel");
             SetQuestion();
             InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
         }
 
         private void HomeButton_Handler()
         {
-            EnablePanel("Menu_Panel");
+            EnableScreen("Menu_Panel");
         }
 
-        private bool VerifyIsLastQuestion()
+        #endregion
+
+        #region COROUTINE_METHODS
+
+        private IEnumerator EnableHomeScreenAutomatic_Coroutine()
         {
-            if((counterQuestion+1) == limitMaxQuestions)
-            {
-                countAnswersRigth.text = PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME).ToString();
-                CancelInvoke(nameof(DecreaseTimerSlider));
-                EnablePanel("Result_Panel");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private void EnablePanel(string screenName)
-        {
-            screens.ForEach(screen => screen.SetActive(false));
-
-            GameObject screenForEnable = screens.Find(screen => screen.name == screenName);
-            screenForEnable.SetActive(true);
-        }
-
-        private void SetQuestion()
-        {
-            int questionCurrentIndex = questionsSelected[counterQuestion];
-            QuestionScriptableObject questionCurrent = questionScriptableObjects[questionCurrentIndex];
-
-            for (int index = 0; index < rootAnswers.transform.childCount; index++)
-            {
-                Transform children = rootAnswers.transform.GetChild(index);
-                Destroy(children.gameObject);
-            }
-
-            questionIdText.text = $"{counterQuestion+1}";
-            questionDescription.text = questionCurrent.question;
-
-            for (int index = 0; index < questionCurrent.answers.Length; index++)
-            {
-                AnswerPrefab answerPrefabCreated = Instantiate(answerPrefab, rootAnswers);
-                answerPrefabCreated.SetText(questionCurrent.answers[index]);
-
-                if(index == questionCurrent.answerRightIndex)
-                {
-                    answerPrefabCreated.SetRigth(true);
-                }
-            }
+            yield return new WaitForSeconds(5f);
+            EnableScreen("Menu_Panel");
         }
 
         #endregion
