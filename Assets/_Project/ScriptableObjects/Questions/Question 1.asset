@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9438525f41344b47908075538fc7fd8, type: 3}
+  m_Name: Question 1
+  m_EditorClassIdentifier: 
+  question: "Como \xE9 produzido o g\xE1s natural liquefeito (GNL)?"
+  answers:
+  - "Por resfriamento do g\xE1s natural"
+  - "Por solidifica\xE7\xE3o do g\xE1s natural"
+  - "Por aquecimento do g\xE1s natural"
+  - "Pela combust\xE3o do g\xE1s natural"
+  answerRightIndex: 0
+  questionRightDescription: "O GNL \xE9 produzido a partir de um processo criog\xEAnico,
+    no qual o g\xE1s natural \xE9 resfriado a\r\naproximadamente -160\xBAC, temperatura
+    em que muda para o estado l\xEDquido."
