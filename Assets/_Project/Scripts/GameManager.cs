@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using IsmaelNascimento.Prefab;
 using System.Collections.Generic;
 using System.Collections;
+using Proyecto26;
 
 namespace IsmaelNascimento.Manager
 {
@@ -15,6 +16,10 @@ namespace IsmaelNascimento.Manager
         private readonly List<int> questionsSelected = new();
         private const string POINTS_PLAYERPREFS_NAME = "POINTS_PLAYERPREFS_NAME";
         private int counterQuestion;
+
+        private const string URL_CAN_GAME = "https://virtu-gnl-quiz-default-rtdb.firebaseio.com/demo.json";
+        private const string URL_PLAYED_INCREMENT = "https://virtu-gnl-quiz-default-rtdb.firebaseio.com/played.json";
+        private const string PAYLOAD_PLAYED_INCREMENT = "{ \".sv\": { \"increment\": 1 } }";
 
         [Space()]
         [Header("Parameters")]
@@ -63,6 +68,16 @@ namespace IsmaelNascimento.Manager
             nextQuestionButton.onClick.AddListener(() => NextQuestionButton_Handler(false));
             startGameButton.onClick.AddListener(StartGameButton_Handler);
             homeButton.onClick.AddListener(HomeButton_Handler);
+        }
+
+        private void Start()
+        {
+            RestClient.Get(URL_CAN_GAME).Then(response => {
+                if (!bool.Parse(response.Text))
+                {
+                    startGameButton.onClick.RemoveAllListeners();
+                }
+            });
         }
 
         private void OnDisable()
@@ -223,13 +238,18 @@ namespace IsmaelNascimento.Manager
 
         private void StartGameButton_Handler()
         {
-            counterQuestion = 0;
-            GetQuestions();
-            timerSlider.value = timeMaxQuestionInSeconds;
-            PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, 0);
-            EnableScreen("Question_Panel");
-            SetQuestion();
-            InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
+            RestClient.Put(URL_PLAYED_INCREMENT, PAYLOAD_PLAYED_INCREMENT).Then(response => {
+                counterQuestion = 0;
+                GetQuestions();
+                timerSlider.value = timeMaxQuestionInSeconds;
+                PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, 0);
+                EnableScreen("Question_Panel");
+                SetQuestion();
+                InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
+            }).Catch(err =>
+            {
+                Debug.LogError(err.Message);
+            });
         }
 
         private void HomeButton_Handler()
