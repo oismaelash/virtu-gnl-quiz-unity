@@ -1739,6 +1739,7 @@ MonoBehaviour:
   startGameButton: {fileID: 1360814103}
   questionIdText: {fileID: 45772242}
   questionDescription: {fileID: 1611580984}
+  questionCounterText: {fileID: 1226633516}
   rootAnswers: {fileID: 1286679764}
   timerSlider: {fileID: 369268551}
   restartGameQuestionButton: {fileID: 1988197988}

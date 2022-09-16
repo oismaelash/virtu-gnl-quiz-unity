@@ -43,6 +43,7 @@ namespace IsmaelNascimento.Manager
         [Header("QuestionScreen")]
         [SerializeField] private TMP_Text questionIdText;
         [SerializeField] private TMP_Text questionDescription;
+        [SerializeField] private TMP_Text questionCounterText;
         [SerializeField] private Transform rootAnswers;
         [SerializeField] private Slider timerSlider;
         [SerializeField] private Button restartGameQuestionButton;
@@ -153,7 +154,6 @@ namespace IsmaelNascimento.Manager
             if(GetCounterQuestionCurrentForShow() == limitMaxQuestions)
             {
                 countAnswersRigth.text = PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME).ToString();
-                CancelInvoke(nameof(DecreaseTimerSlider));
                 EnableScreen("Result_Panel");
                 StartCoroutine(nameof(EnableHomeScreenAutomatic_Coroutine));
                 return true;
@@ -201,6 +201,8 @@ namespace IsmaelNascimento.Manager
 
             timerSlider.maxValue = timeMaxQuestionInSeconds;
             timerSlider.value = timeMaxQuestionInSeconds;
+
+            questionCounterText.text = $"Pergunta {GetCounterQuestionCurrentForShow()} / {limitMaxQuestions}";
         }
 
         private int GetCounterQuestionCurrentForShow()
@@ -234,6 +236,8 @@ namespace IsmaelNascimento.Manager
 
         private void NextQuestionButton_Handler(bool isAuto)
         {
+            CancelInvoke(nameof(DecreaseTimerSlider));
+
             if (VerifyIsLastQuestion())
             {
                 return;
@@ -242,15 +246,11 @@ namespace IsmaelNascimento.Manager
             timerSlider.value = timeMaxQuestionInSeconds;
             counterQuestion++;
             SetQuestion();
+            InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
 
-            if (isAuto)
-            {
-                InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
-            }
-            else
+            if (!isAuto)
             {
                 EnableScreen("Question_Panel");
-                InvokeRepeating(nameof(DecreaseTimerSlider), timeDecreaseTimerSliderInSeconds, timeDecreaseTimerSliderInSeconds);
             }
         }
 
