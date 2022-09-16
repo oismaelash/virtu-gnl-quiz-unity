@@ -746,7 +746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &235924802
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1267,7 +1267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &397140828
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1737,14 +1737,22 @@ MonoBehaviour:
   - {fileID: 235924801}
   answerPrefab: {fileID: 2208670913641673797, guid: 24751e88a7656694fbecb206eb144317, type: 3}
   startGameButton: {fileID: 1360814103}
-  nextQuestionButton: {fileID: 0}
   questionIdText: {fileID: 45772242}
   questionDescription: {fileID: 1611580984}
   rootAnswers: {fileID: 1286679764}
   timerSlider: {fileID: 369268551}
+  restartGameQuestionButton: {fileID: 1988197988}
+  nextQuestionQuestionButton: {fileID: 1745107734}
+  successColor: {r: 0, g: 0.77254903, b: 0.47843137, a: 1}
+  wrongColor: {r: 0.41568628, g: 0.58431375, b: 0.9843137, a: 1}
+  successDescriptionText: Certa Resposta!
+  wrongDescriptionText: Resposta Errada
+  backgroundFeedbackImage: {fileID: 753997043}
   afterQuestionIdText: {fileID: 762432746}
   afterQuestionDescription: {fileID: 514843352}
   afterQuestionDescriptionRigth: {fileID: 1283637970}
+  restartGameFeedbackButton: {fileID: 861491482}
+  nextQuestionFeedbackButton: {fileID: 540329523}
   countAnswersRigth: {fileID: 976824704}
   homeButton: {fileID: 785679523}
 --- !u!1 &540329521

@@ -6,6 +6,7 @@ using IsmaelNascimento.Prefab;
 using System.Collections.Generic;
 using System.Collections;
 using Proyecto26;
+using UnityEngine.SceneManagement;
 
 namespace IsmaelNascimento.Manager
 {
@@ -37,7 +38,6 @@ namespace IsmaelNascimento.Manager
         [SerializeField] private List<GameObject> screens;
         [SerializeField] private AnswerPrefab answerPrefab;
         [SerializeField] private Button startGameButton;
-        [SerializeField] private Button nextQuestionButton;
         
         [Space()]
         [Header("QuestionScreen")]
@@ -45,13 +45,22 @@ namespace IsmaelNascimento.Manager
         [SerializeField] private TMP_Text questionDescription;
         [SerializeField] private Transform rootAnswers;
         [SerializeField] private Slider timerSlider;
-        
+        [SerializeField] private Button restartGameQuestionButton;
+        [SerializeField] private Button nextQuestionQuestionButton;
+
         [Space()]
-        [Header("AfterScreen")]
+        [Header("FeedbackScreen")]
+        [SerializeField] private Color successColor;
+        [SerializeField] private Color wrongColor;
+        [SerializeField] private string successDescriptionText;
+        [SerializeField] private string wrongDescriptionText;
+        [SerializeField] private Image backgroundFeedbackImage;
         [SerializeField] private TMP_Text afterQuestionIdText;
         [SerializeField] private TMP_Text afterQuestionDescription;
         [SerializeField] private TMP_Text afterQuestionDescriptionRigth;
-        
+        [SerializeField] private Button restartGameFeedbackButton;
+        [SerializeField] private Button nextQuestionFeedbackButton;
+
         [Space()]
         [Header("ResultScreen")]
         [SerializeField] private TMP_Text countAnswersRigth;
@@ -65,9 +74,12 @@ namespace IsmaelNascimento.Manager
         {
             AnswerPrefab.OnAnswerClick += OnAnswerClick_Handler;
             timerSlider.onValueChanged.AddListener(TimerSliderOnValueChanged_Handler);
-            nextQuestionButton.onClick.AddListener(() => NextQuestionButton_Handler(false));
             startGameButton.onClick.AddListener(StartGameButton_Handler);
             homeButton.onClick.AddListener(HomeButton_Handler);
+            nextQuestionFeedbackButton.onClick.AddListener(() => NextQuestionButton_Handler(false));
+            nextQuestionQuestionButton.onClick.AddListener(() => NextQuestionButton_Handler(false));
+            restartGameFeedbackButton.onClick.AddListener(OnRestartClick_Handler);
+            restartGameQuestionButton.onClick.AddListener(OnRestartClick_Handler);
         }
 
         private void Start()
@@ -114,12 +126,26 @@ namespace IsmaelNascimento.Manager
             timerSlider.value -= countDecreaseTimerSlider;
         }
 
-        private void SetupAfterScreen()
+        private void SetupFeedbackScreen(bool isRigth)
         {
+            if (isRigth)
+            {
+                int pointsCurrent = PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME);
+                int newPoints = pointsCurrent + 1;
+                PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, newPoints);
+            }
+
             afterQuestionIdText.text = $"{GetCounterQuestionCurrentForShow()}";
-            afterQuestionDescription.text = questionScriptableObjects[counterQuestion].question;
+            afterQuestionDescription.text = isRigth ? successDescriptionText : wrongDescriptionText;
             afterQuestionDescriptionRigth.text = questionScriptableObjects[counterQuestion].questionRightDescription;
-            EnableScreen("AfterQuestion_Panel");
+            restartGameFeedbackButton.GetComponentInChildren<TMP_Text>().color = isRigth ? successColor : wrongColor;
+            nextQuestionFeedbackButton.GetComponentInChildren<TMP_Text>().color = isRigth ? successColor : wrongColor;
+            restartGameFeedbackButton.gameObject.SetActive(!isRigth);
+            backgroundFeedbackImage.color = isRigth ? successColor : wrongColor;
+
+            EnableScreen("FeedbackQuestion_Panel");
+
+            Debug.Log($"User rigth question = {isRigth} | points = {PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME)}");
         }
 
         private bool VerifyIsLastQuestion()
@@ -186,23 +212,15 @@ namespace IsmaelNascimento.Manager
 
         #region HANDLER_METHODS
 
+        private void OnRestartClick_Handler()
+        {
+            SceneManager.LoadScene(0);
+        }
+
         private void OnAnswerClick_Handler(bool isRigth)
         {
             CancelInvoke(nameof(DecreaseTimerSlider));
-
-            if (isRigth)
-            {
-                int pointsCurrent = PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME);
-                int newPoints = pointsCurrent + 1;
-                PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, newPoints);
-                NextQuestionButton_Handler(true);
-            }
-            else
-            {
-                SetupAfterScreen();
-            }
-
-            Debug.Log($"User rigth question = {isRigth} | points = {PlayerPrefs.GetInt(POINTS_PLAYERPREFS_NAME)}");
+            SetupFeedbackScreen(isRigth);
         }
 
         private void TimerSliderOnValueChanged_Handler(float value)
@@ -254,7 +272,7 @@ namespace IsmaelNascimento.Manager
 
         private void HomeButton_Handler()
         {
-            EnableScreen("Menu_Panel");
+            EnableScreen("Wait_Panel");
         }
 
         #endregion
