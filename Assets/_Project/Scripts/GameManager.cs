@@ -25,7 +25,7 @@ namespace IsmaelNascimento.Manager
         [Space()]
         [Header("Parameters")]
         [SerializeField] private int limitMaxQuestions = 5;
-        [SerializeField] private int timeMaxQuestionInSeconds = 20;
+        [SerializeField] private int timeMaxQuestionInSeconds = 60;
         [SerializeField] private float timeDecreaseTimerSliderInSeconds = 1f;
         [SerializeField] private float countDecreaseTimerSlider= 1f;
 
