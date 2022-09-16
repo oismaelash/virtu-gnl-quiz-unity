@@ -272,7 +272,7 @@ namespace IsmaelNascimento.Manager
 
         private void HomeButton_Handler()
         {
-            EnableScreen("Wait_Panel");
+            EnableScreen("Menu_Panel");
         }
 
         #endregion
