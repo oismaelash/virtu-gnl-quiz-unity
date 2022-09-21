@@ -1729,7 +1729,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 100, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2862,8 +2862,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -450.391, y: -596}
-  m_SizeDelta: {x: 1793.435, y: 389.63}
+  m_AnchoredPosition: {x: -610.7446, y: -702.90234}
+  m_SizeDelta: {x: 2114.142, y: 603.435}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &854029036
 MonoBehaviour:
@@ -2885,8 +2885,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Teste seus conhecimentos,\ndivirta-se com perguntas\ne respostas sobre
-    o g\xE1s natural."
+  m_text: "Teste seus conhecimentos,\ndivirta-se com perguntas\ne respostas sobre\no
+    g\xE1s natural e GNL"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d6fbab3db5e0bc349bbf195d363bfcfa, type: 2}
   m_sharedMaterial: {fileID: 3677173382027103159, guid: d6fbab3db5e0bc349bbf195d363bfcfa, type: 2}
@@ -4309,7 +4309,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 2667.4482, y: -577.2}
+  m_AnchoredPosition: {x: 2667.4924, y: -577.2}
   m_SizeDelta: {x: 3131.999, y: 1154.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1283637970
@@ -5020,7 +5020,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2e5a94bb460f634418c3642fccccc94e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 05252faf43488394cb522d1bf36e4ef6, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -5531,7 +5531,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 920f05f4cd2339548aad19712e25d610, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d4553fe0a9a47545a6bee5843b3806b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
