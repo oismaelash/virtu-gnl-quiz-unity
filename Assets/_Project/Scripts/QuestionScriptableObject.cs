@@ -12,7 +12,7 @@ namespace IsmaelNascimento.ScriptableObjects
         [TextArea]
         public string[] answers;
         public int answerRightIndex;
-        [TextArea]
+        [TextArea(1, 100)]
         public string questionRightDescription;
 
         #endregion

@@ -131,9 +131,11 @@ namespace IsmaelNascimento.Manager
                 PlayerPrefs.SetInt(POINTS_PLAYERPREFS_NAME, newPoints);
             }
 
+            int questionCurrentIndex = questionsSelected[counterQuestion];
+
             afterQuestionIdText.text = $"{GetCounterQuestionCurrentForShow()}";
             afterQuestionDescription.text = isRigth ? successDescriptionText : wrongDescriptionText;
-            afterQuestionDescriptionRigth.text = questionScriptableObjects[counterQuestion].questionRightDescription;
+            afterQuestionDescriptionRigth.text = questionScriptableObjects[questionCurrentIndex].questionRightDescription;
             restartGameFeedbackButton.GetComponentInChildren<TMP_Text>().color = isRigth ? successColor : wrongColor;
             nextQuestionFeedbackButton.GetComponentInChildren<TMP_Text>().color = isRigth ? successColor : wrongColor;
             restartGameFeedbackButton.gameObject.SetActive(!isRigth);
