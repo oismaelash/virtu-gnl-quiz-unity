@@ -6,7 +6,6 @@ using IsmaelNascimento.Prefab;
 using System.Collections.Generic;
 using System.Collections;
 using Proyecto26;
-using UnityEngine.SceneManagement;
 
 namespace IsmaelNascimento.Manager
 {
@@ -14,7 +13,8 @@ namespace IsmaelNascimento.Manager
     {
         #region VARIABLES
 
-        private readonly List<int> questionsSelected = new();
+        private List<int> questionsSelected = new();
+        private List<int> questionsSelectedLast = new();
         private const string POINTS_PLAYERPREFS_NAME = "POINTS_PLAYERPREFS_NAME";
         private int counterQuestion;
 
@@ -104,22 +104,17 @@ namespace IsmaelNascimento.Manager
 
         private void GetQuestions()
         {
-            questionsSelected.Clear();
-
-            for (int index = 0; index <= limitMaxQuestions; index++)
+            while (questionsSelected.Count < limitMaxQuestions)
             {
                 int newQuestion = Random.Range(0, questionScriptableObjects.Length);
 
-                if (!questionsSelected.Contains(newQuestion))
+                if (!questionsSelected.Contains(newQuestion) && !questionsSelectedLast.Contains(newQuestion))
                 {
                     questionsSelected.Add(newQuestion);
                 }
             }
 
-            if(questionsSelected.Count < limitMaxQuestions)
-            {
-                GetQuestions();
-            }
+            questionsSelectedLast = new(questionsSelected);
         }
 
         private void DecreaseTimerSlider()
@@ -216,7 +211,10 @@ namespace IsmaelNascimento.Manager
 
         private void OnRestartClick_Handler()
         {
-            SceneManager.LoadScene(0);
+            //SceneManager.LoadScene(0);
+            EnableScreen("Wait_Panel");
+            questionsSelected.Clear();
+            CancelInvoke(nameof(DecreaseTimerSlider));
         }
 
         private void OnAnswerClick_Handler(bool isRigth)
